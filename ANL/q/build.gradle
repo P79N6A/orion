@@ -1,0 +1,42 @@
+//apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '28.0.3'
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 27
+        versionCode 100007
+        versionName "1.0.7"
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (output.outputFile.name.endsWith("apk")) {
+                def oriOutput = output.outputFile.absolutePath
+                outputFileName = "../../../../../libhs/src/main/cpp/q.apk"
+                println '>>> ' + oriOutput + ' -> ' + outputFileName
+            }
+        }
+    }
+
+    useLibrary("org.apache.http.legacy")
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
